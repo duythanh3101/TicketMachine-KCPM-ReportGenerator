@@ -1,0 +1,84 @@
+﻿<Window x:Class="TicketMachine.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TicketMachine"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        DataContext="{StaticResource MainVM}"
+        Title="MainWindow" Height="600" Width="800"
+        xmlns:cal="http://www.caliburnproject.org"
+        >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Chương trình bán vé tự động" FontSize="40" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center"></TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6.5*"></RowDefinition>
+                <RowDefinition Height="3.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Thông tin khách hàng" Grid.Row="0" FontSize="25" BorderThickness="3" Margin="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="7*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 10 0 10"
+                       Text="Họ tên" FontSize="25" VerticalAlignment="Center"
+                       HorizontalAlignment="Center" 
+                       >
+                    </TextBlock>
+                    <TextBox Grid.Row="0" Grid.Column="1" Width="400" Height="60" Text="{Binding FullName}"
+                             BorderThickness="2" FontSize="20" TextAlignment="Justify" Margin="0 10 0 10"
+                             >
+                    </TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 10 0 10"
+                       Text="Số điện thoại" FontSize="25" VerticalAlignment="Center"
+                       HorizontalAlignment="Center" 
+                       ></TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="1" Width="400" Height="60" Text="{Binding PhoneNumber}"
+                             BorderThickness="2" FontSize="20" TextAlignment="Justify" Margin="0 10 0 10"
+                             cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInputPhoneNumber($source, $eventArgs)]" 
+                             />
+                </Grid>
+            </GroupBox>
+            <Grid Grid.Row="1">
+                <GroupBox Header="Loại vé" FontSize="30" Margin="10" BorderThickness="3">
+                    <StackPanel Orientation="Horizontal" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <RadioButton Content="Vé thường" IsChecked="True"
+                                      FontSize="20" HorizontalAlignment="Left" Margin="0 0 40 0"
+                                    cal:Message.Attach="[Event Checked] = [Action CheckIndex(0)]" 
+                                      ></RadioButton>
+                        <RadioButton Content="Vé VIP" FontSize="20" HorizontalAlignment="Center" Margin="0 0 40 0"
+                                    cal:Message.Attach="[Event Checked] = [Action CheckIndex(1)]" 
+                                     ></RadioButton>
+                        <RadioButton Content="Vé thượng hạng"  FontSize="20"  HorizontalAlignment="Right"  Margin="40 0 0 0"
+                                    cal:Message.Attach="[Event Checked] = [Action CheckIndex(2)]" 
+                                     ></RadioButton>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
+        <Button Grid.Row="2" Content="Thanh toán" Width="150" Height="40" FontSize="25" Margin="0 10 0 10"
+                cal:Message.Attach="Pay_Click()"
+                >
+        </Button>
+
+    </Grid>
+</Window>
