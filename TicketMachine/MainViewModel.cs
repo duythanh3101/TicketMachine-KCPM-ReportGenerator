@@ -29,6 +29,12 @@ namespace TicketMachine
         public string PhoneNumber { get => _PhoneNumber; set { if (value == _PhoneNumber) return; _PhoneNumber = value; OnPropertyChanged(); } }
 
         /// <summary>
+        /// Notify 
+        /// </summary>
+        private string _Content;
+        public string Content { get => _Content; set { if (value == _Content) return; _Content = value; OnPropertyChanged(); } }
+
+        /// <summary>
         /// Index of radio button
         /// </summary>
         private int indexRadio;
@@ -36,12 +42,7 @@ namespace TicketMachine
         /// <summary>
         /// Format of congratulation content
         /// </summary>
-        private string FORMAT_CONGRATULATION = "Congratulation to {0} with the phone number {1} is get {2} ticket successfully !";
-
-        /// <summary>
-        /// Congratulation content
-        /// </summary>
-        private string content;
+        private string FORMAT_NOTIFY = "{0} with the phone number {1} is get {2} ticket successfully !";
 
         #endregion Properties
 
@@ -51,7 +52,7 @@ namespace TicketMachine
         public MainViewModel()
         {
             indexRadio = 0;
-            content = string.Empty;
+            Content = string.Empty;
         }
         #endregion Constructor
 
@@ -69,14 +70,18 @@ namespace TicketMachine
         /// <summary>
         /// Pay on event click
         /// </summary>
-        public void Pay_Click()
+        public bool Pay_Click()
         {
             if (Validation())
             {
                 string ticketName = GetTicketName();
-                content = string.Format(FORMAT_CONGRATULATION, FullName, PhoneNumber, ticketName);
+                if (!string.IsNullOrEmpty(ticketName))
+                {
+                    Content = string.Format(FORMAT_NOTIFY, FullName, PhoneNumber, ticketName);
+                    return true;
+                }
             }
-            MessageBox.Show(content);
+            return false;
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace TicketMachine
         {
             if (string.IsNullOrEmpty(FullName))
             {
-                content = "FullName has not content";
+                Content = "FullName has not content";
                 return false;
             }
             return true;
@@ -111,7 +116,7 @@ namespace TicketMachine
         {
             if (string.IsNullOrEmpty(PhoneNumber))
             {
-                content = "PhoneNumber has not content";
+                Content = "PhoneNumber has not content";
                 return false;
             }
             return true;
